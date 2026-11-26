@@ -7,6 +7,7 @@ function linkifyQuotes(text){
 }
 
 
+
 function renderPopular(threads){
   const el = document.getElementById('popular-grid');
   if(!el) return;
@@ -22,11 +23,12 @@ function renderPopular(threads){
   };
 
   el.innerHTML = visibleThreads.map(t => {
+
     // Ищем первое изображение в треде
     const firstImage = t.posts.find(p =>
       p[4] &&
-      !p[4].endsWith('.mp3') &&
-      !p[4].endsWith('.wav')
+      typeof p[4] === 'string' &&
+      !/\.(mp3|wav)$/i.test(p[4])
     );
 
     const thumbnail = firstImage
@@ -47,18 +49,6 @@ function renderPopular(threads){
   }).join('');
 };
 
-  el.innerHTML = visibleThreads.map((t,i) =>
-    `<a class="popular-card" href="thread.html?id=${t.id}">
-      <div class="popular-title">${labels[t.board] || t.board}</div>
-      <div class="popular-thumb">
-        ${i === 0
-          ? '<img src="assets/slime-banner.png" alt="">'
-          : `<span>/${t.board}/</span>`}
-      </div>
-      <strong>${esc(t.title)}</strong>
-    </a>`
-  ).join('');
-}
 function renderBoard(threads){
  const list=document.getElementById('thread-list'); if(!list)return;
  const board=list.dataset.board;
