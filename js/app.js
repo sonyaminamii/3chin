@@ -6,18 +6,45 @@ function linkifyQuotes(text){
  return esc(text).replace(/&gt;&gt;(\d+)/g,(m,id)=>`<a class="quote-link" href="#post-${id}">&gt;&gt;${id}</a>`);
 }
 
+
 function renderPopular(threads){
   const el = document.getElementById('popular-grid');
   if(!el) return;
 
+  // Скрываем секретную доску
   const visibleThreads = threads.filter(t => t.board !== 'o');
 
   const labels = {
-  "b": "Random",
-  "g": "Technology",
-  "x": "Paranormal",
-  "v": "Video Games",
-  "o": "Secret"
+    "b": "Random",
+    "g": "Technology",
+    "x": "Paranormal",
+    "v": "Video Games"
+  };
+
+  el.innerHTML = visibleThreads.map(t => {
+    // Ищем первое изображение в треде
+    const firstImage = t.posts.find(p =>
+      p[4] &&
+      !p[4].endsWith('.mp3') &&
+      !p[4].endsWith('.wav')
+    );
+
+    const thumbnail = firstImage
+      ? `<img src="assets/${assetFile(firstImage[4])}" alt="">`
+      : `<span>/${t.board}/</span>`;
+
+    return `
+      <a class="popular-card" href="thread.html?id=${t.id}">
+        <div class="popular-title">
+          ${labels[t.board] || t.board}
+        </div>
+        <div class="popular-thumb">
+          ${thumbnail}
+        </div>
+        <strong>${esc(t.title)}</strong>
+      </a>
+    `;
+  }).join('');
 };
 
   el.innerHTML = visibleThreads.map((t,i) =>
