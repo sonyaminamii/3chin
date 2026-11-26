@@ -19,7 +19,7 @@ function renderPopular(threads){
     "b": "Random",
     "g": "Technology",
     "x": "Paranormal",
-    "v": "Very Important"
+    "v": "Very Important",
     "qst": "Quests",
     "e": "Ecchi"
    
