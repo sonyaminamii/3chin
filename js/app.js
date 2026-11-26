@@ -5,10 +5,32 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 function linkifyQuotes(text){
  return esc(text).replace(/&gt;&gt;(\d+)/g,(m,id)=>`<a class="quote-link" href="#post-${id}">&gt;&gt;${id}</a>`);
 }
+
 function renderPopular(threads){
- const el=document.getElementById('popular-grid'); if(!el)return;
- const labels=["Very Important Posts","Very Important Posts","Very Important Posts","Very Important Posts","Very Important Posts"];
- el.innerHTML=threads.map((t,i)=>`<a class="popular-card" href="thread.html?id=${t.id}"><div class="popular-title">${labels[i%labels.length]}</div><div class="popular-thumb">${i===0?'<img src="assets/slime-banner.png" alt="">':`<span>/${t.board}/</span>`}</div><strong>${esc(t.title)}</strong></a>`).join('');
+  const el = document.getElementById('popular-grid');
+  if(!el) return;
+
+  const visibleThreads = threads.filter(t => t.board !== 'o');
+
+  const labels = {
+  "b": "Random",
+  "g": "Technology",
+  "x": "Paranormal",
+  "v": "Video Games",
+  "o": "Secret"
+};
+
+  el.innerHTML = visibleThreads.map((t,i) =>
+    `<a class="popular-card" href="thread.html?id=${t.id}">
+      <div class="popular-title">${labels[t.board] || t.board}</div>
+      <div class="popular-thumb">
+        ${i === 0
+          ? '<img src="assets/slime-banner.png" alt="">'
+          : `<span>/${t.board}/</span>`}
+      </div>
+      <strong>${esc(t.title)}</strong>
+    </a>`
+  ).join('');
 }
 function renderBoard(threads){
  const list=document.getElementById('thread-list'); if(!list)return;
