@@ -14,7 +14,7 @@ function renderBoard(threads){
  const list=document.getElementById('thread-list'); if(!list)return;
  const board=list.dataset.board;
  const items=threads.filter(t=>t.board===board);
- list.innerHTML=items.map(t=>`<article class="thread-card"><div class="thread-card-head"><a href="../thread.html?id=${t.id}">No.${t.id}</a> <span>${esc(t.title)}</span></div><p>${esc(t.posts[0].text.slice(0,220))}…</p><div class="thread-meta">${t.posts.length} posts · Last reply ${esc(t.posts[t.posts.length-1][1])}</div></article>`).join('') || '<p>No threads found.</p>';
+ list.innerHTML=items.map(t=>`<article class="thread-card"><div class="thread-card-head"><a href="../thread.html?id=${t.id}">No.${t.id}</a> <span>${esc(t.title)}</span></div><p>${esc(t.posts[0][3].slice(0,220))}…</p><div class="thread-meta">${t.posts.length} posts · Last reply ${esc(t.posts[t.posts.length-1][1])}</div></article>`).join('') || '<p>No threads found.</p>';
 }
 function renderThread(threads){
  if(!document.getElementById('posts')) return;
@@ -37,6 +37,16 @@ function renderSearch(threads){
  const input=document.getElementById('search-input'); if(!input)return;
  const out=document.getElementById('search-results');
  function run(){const q=input.value.toLowerCase().trim(); if(!q){out.innerHTML='';return;}
+                if(q === '812113763'){
+  out.innerHTML = `
+    <p>
+      <a href="boards/o.html">
+        /o/ — No.812113763
+      </a>
+    </p>
+  `;
+  return;
+}
  const results=[]; threads.forEach(t=>t.posts.forEach(p=>{if((p[3]+' '+t.title).toLowerCase().includes(q))results.push({t,p});}));
  out.innerHTML=results.map(x=>`<p><a href="thread.html?id=${x.t.id}#post-${x.p[0]}">/${x.t.board}/ No.${x.p[0]}</a> — ${esc(x.p[3].slice(0,180))}</p>`).join('')||'<p>No results.</p>';}
  input.addEventListener('input',run);
