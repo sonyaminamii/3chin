@@ -20,6 +20,9 @@ function renderPopular(threads){
     "g": "Technology",
     "x": "Paranormal",
     "v": "Very Important"
+    "qst": "Quests",
+    "e": "Ecchi"
+   
   };
 
   el.innerHTML = visibleThreads.map(t => {
